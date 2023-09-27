@@ -22,19 +22,11 @@
 
 We create two secrets, one for the admin and one for the app user, where in both cases the password equals the username.
 
-```shell
-→ echo -n "admin" | base64
-→ echo -n "app" | base64
-
-→ kubectl apply -f ./secret-admin-user.yaml -n cnpg
-→ kubectl apply -f ./secret-app-user.yaml -n cnpg
-```
-
 ### Cluster
 
 ```shell
-→ kubectl create namespace cnpg
-→ kubectl apply -f ./cluster.yaml
+→ kubectl apply -f \
+    https://raw.githubusercontent.com/m99coder/cloudnative-pg-operator/main/cluster.yaml
 
 → # all pods are labeled with the cluster name
 → # kubectl get pods -n cnpg -l cnpg.io/cluster=cnpg-pg15-cluster
