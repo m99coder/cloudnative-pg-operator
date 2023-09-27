@@ -121,10 +121,6 @@ Seems like the `PodMonitor` is not properly configured to monitor the cluster po
 → kubectl delete namespace cnpg
 → kubectl delete -f \
     https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.20/releases/cnpg-1.20.2.yaml
-
-→ # monitoring
-→ kubectl delete namespace cnpg-monitoring
-→ helm uninstall prometheus-community
 ```
 
 ## Resources
