@@ -58,29 +58,24 @@ cnpg-pg15-cluster-rw   ClusterIP   10.100.8.124    <none>        5432/TCP   85m
 
 ## Monitoring
 
-> _To be fixed later_
-
 ```shell
-→ kubectl create namespace cnpg-monitoring
+→ kubectl get crds -n monitoring
 
-→ helm repo add prometheus-community \
-    https://prometheus-community.github.io/helm-charts
+→ # get endpoints for:
+→ #   - alert manager (port 9093)
+→ #   - prometheus (port 9090)
+→ kubectl get endpoints -n monitoring
 
-→ helm upgrade --install \
-    -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/kube-stack-config.yaml \
-    --set namespaceOverride=cnpg-monitoring \
-    prometheus-community \
-    prometheus-community/kube-prometheus-stack
+→ kubectl get podmonitors.monitoring.coreos.com -n cnpg
+NAME                AGE
+cnpg-pg15-cluster   152m
 
-→ kubectl get pods -l release=prometheus-community \
-    -n cnpg-monitoring
-NAME                                                      READY   STATUS    RESTARTS   AGE
-prometheus-community-kube-operator-5d54b9cc5c-zzzqd       1/1     Running   0          69s
-prometheus-community-kube-state-metrics-cd7c95449-plg2q   1/1     Running   0          69s
-
-→ kubectl logs -f prometheus-prometheus-community-kube-prometheus-0 -c prometheus -n cnpg-monitoring
-ts=2023-09-27T09:19:44.341Z caller=main.go:487 level=error msg="Error loading config (--config.file=/etc/prometheus/config_out/prometheus.env.yaml)" file=/etc/prometheus/config_out/prometheus.env.yaml err="parsing YAML file /etc/prometheus/config_out/prometheus.env.yaml: found multiple scrape configs with job name \"monitoring/alertmanager/0\""
+→ kubectl port-forward \
+    -n monitoring \
+    svc/prometheus-app 9090
 ```
+
+Seems like the `PodMonitor` is not properly configured to monitor the cluster pods.
 
 ## Cleanup
 
@@ -95,3 +90,8 @@ ts=2023-09-27T09:19:44.341Z caller=main.go:487 level=error msg="Error loading co
 → kubectl delete namespace cnpg-monitoring
 → helm uninstall prometheus-community
 ```
+
+## Resources
+
+- <https://cloudnative-pg.io/>
+- <https://prometheus-operator.dev/>
