@@ -1,0 +1,21 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cnpg-pg15-cluster
+  namespace: cnpg
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.4
+  primaryUpdateStrategy: unsupervised
+  superuserSecret:
+    name: cnpg-super-user
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+      secret:
+        name: cnpg-app-user
+  storage:
+    size: 1Gi
+  monitoring:
+    enablePodMonitor: true
