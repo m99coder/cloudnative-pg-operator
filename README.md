@@ -109,8 +109,8 @@ Seems like the `PodMonitor` is not properly configured to monitor the cluster po
 
 ```shell
 → # operator and cluster
-→ kubectl delete clusters.postgresql.cnpg.io cnpg-pg15-cluster
-→ kubectl delete namespace cnpg
+→ kubectl delete -f \
+    https://raw.githubusercontent.com/m99coder/cloudnative-pg-operator/main/cluster.yaml
 → kubectl delete -f \
     https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.20/releases/cnpg-1.20.2.yaml
 ```
